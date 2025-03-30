@@ -7,7 +7,7 @@ const Home = () => {
 
   return (
     <SafeAreaView className="flex-1 bg-white" style={{ paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 }}>
-      <StatusBar barStyle="dark-content" />
+      <StatusBar backgroundColor={'#fff'} barStyle={'dark-content'} />
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
         {/* Header Section */}
         <View className="w-full p-6 border-b border-gray-100">
