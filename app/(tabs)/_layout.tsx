@@ -84,6 +84,7 @@ export default function TabLayout() {
         options={{
           title: 'Roadmaps',
           tabBarLabel: 'Roadmaps',
+          headerShown: false,
           tabBarIcon: ({ color, size, focused }) => (
             <Animated.View
               style={{

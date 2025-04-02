@@ -1,0 +1,180 @@
+{
+   "frontend": {
+     "Level 1": {
+       "HTML": {
+         "Beginner": ["Basic Tags,", "div", "section", "body"],
+         "Intermediate": ["Semantic tags", "Meta Data"],
+         "Advanced": ["Forms", "Tables"]
+       },
+       "CSS": {
+         "Beginner": ["Selectors", "Properties", "Values"],
+         "Intermediate": ["Layout", "Flexbox"],
+         "Advanced": ["Grid", "Responsive Design"]
+       },
+       "JavaScript Basics": {
+         "Beginner": ["Variables", "Data Types", "Functions"],
+         "Intermediate": ["Loops", "Conditional Statements", "Arrays"],
+         "Advanced": ["Object-Oriented Programming", "Async/Await", "API Calls"]
+       }
+     },
+     "Level 2": {
+       "Advanced JavaScript": {
+         "Beginner": ["Async/Await", "API Calls"],
+         "Intermediate": ["Object-Oriented Programming", "DOM Manipulation"],
+         "Advanced": ["Web Storage", "Web Workers"]
+       },
+       "TypeScript": {
+         "Beginner": ["Basic Syntax", "Type Annotations"],
+         "Intermediate": ["Type Inference", "Generics"],
+         "Advanced": ["Type Guards", "Conditional Types"]
+       }
+     },
+     "Level 3": {
+       "React": {
+         "Beginner": ["Components", "Props", "State"],
+         "Intermediate": ["Lifecycle Methods", "Event Handling", "Context API"],
+         "Advanced": ["Hooks", "Redux", "Server-Side Rendering"],
+         "Note": [
+           "You can choose other js framework like vue or angular instead of react"
+         ]
+       },
+       "TailwindCSS": {
+         "Beginner": ["Basic Usage", "Configuring", "Utilities"],
+         "Intermediate": ["Customizing", "Responsive Design", "Utilities"],
+         "Advanced": [
+           "Custom Components",
+           "Utility-First Design",
+           "Performance Optimization"
+         ]
+       }
+     },
+     "Level 4": {
+       "REST APIs": {
+         "Beginner": ["Request Methods", "Status Codes", "Headers"],
+         "Intermediate": ["Authentication", "Authorization", "Error Handling"],
+         "Advanced": ["API Design", "API Security", "API Performance"]
+       },
+       "Nextjs": {
+         "Beginner": ["Basic Setup", "Routing", "Pages"],
+         "Intermediate": [
+           "Server-Side Rendering",
+           "Static Site Generation",
+           "Internationalization"
+         ],
+         "Advanced": ["API Routes", "Authentication", "Performance Optimization"]
+       },
+       "Deployment & Hosting": {
+         "Beginner": ["Basic Hosting", "CI/CD", "Monitoring"],
+         "Intermediate": ["Containerization", "Orchestration", "Load Balancing"],
+         "Advanced": ["Serverless", "Cloud Providers", "Security"]
+       }
+     },
+     "Extras": {
+       "Version Control": {
+         "Beginner": ["Basic Git", "Branching", "Merging"],
+         "Intermediate": ["Git Flow", "Rebasing", "Squashing"],
+         "Advanced": ["Git Submodules", "Git Hooks", "Git Aliases"]
+       }
+     }
+   },
+   "backend": {
+     "Level 1": {
+       "Node.js": {
+         "Beginner": ["Basic Syntax", "Modules", "Events"],
+         "Intermediate": ["File System", "Streams", "Buffer"],
+         "Advanced": ["Async/Await", "Promises", "Error Handling"]
+       },
+       "Express.js": {
+         "Beginner": ["Basic Routing", "Request/Response", "Middleware"],
+         "Intermediate": ["Error Handling", "Authentication", "Authorization"],
+         "Advanced": ["Routing", "Middleware", "Performance Optimization"]
+       }
+     },
+     "Level 2": {
+       "Databases": {
+         "Beginner": ["Basic CRUD", "SQL vs NoSQL", "Database Models"],
+         "Intermediate": ["Querying", "Indexing", "Caching"],
+         "Advanced": [
+           "Database Design",
+           "Database Security",
+           "Database Performance"
+         ]
+       },
+       "Cloud Services": {
+         "Beginner": ["Basic Cloud", "Cloud Providers", "Cloud Storage"],
+         "Intermediate": [
+           "Cloud Security",
+           "Cloud Cost Optimization",
+           "Cloud Scalability"
+         ],
+         "Advanced": [
+           "Cloud Architecture",
+           "Cloud Migration",
+           "Cloud Disaster Recovery"
+         ]
+       }
+     },
+     "Level 3": {
+       "APIs": {
+         "Beginner": ["Basic API", "API Design", "API Security"],
+         "Intermediate": ["API Performance", "API Testing", "API Documentation"],
+         "Advanced": ["API Gateway", "API Management", "API Security"]
+       },
+       "Microservices": {
+         "Beginner": [
+           "Basic Microservices",
+           "Microservices Architecture",
+           "Microservices Communication"
+         ],
+         "Intermediate": [
+           "Microservices Security",
+           "Microservices Testing",
+           "Microservices Deployment"
+         ],
+         "Advanced": [
+           "Microservices Design",
+           "Microservices Performance",
+           "Microservices Scalability"
+         ]
+       }
+     },
+     "Level 4": {
+       "DevOps": {
+         "Beginner": ["Basic DevOps", "DevOps Tools", "DevOps Practices"],
+         "Intermediate": [
+           "DevOps Automation",
+           "DevOps Security",
+           "DevOps Monitoring"
+         ],
+         "Advanced": [
+           "DevOps Architecture",
+           "DevOps Optimization",
+           "DevOps Innovation"
+         ]
+       },
+       "Cloud Native": {
+         "Beginner": [
+           "Basic Cloud Native",
+           "Cloud Native Architecture",
+           "Cloud Native Development"
+         ],
+         "Intermediate": [
+           "Cloud Native Security",
+           "Cloud Native Testing",
+           "Cloud Native Deployment"
+         ],
+         "Advanced": [
+           "Cloud Native Design",
+           "Cloud Native Performance",
+           "Cloud Native Scalability"
+         ]
+       }
+     },
+     "Extras": {
+       "Containerization": {
+         "Beginner": ["Basic Docker", "Docker Commands", "Dockerfile"]
+     }
+   }
+ }
+ }
+ 
