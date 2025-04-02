@@ -121,6 +121,7 @@ export default function TabLayout() {
         name="profile" 
         options={{
           title: 'My Profile',
+          headerShown: false,
           tabBarLabel: 'Profile',
           tabBarIcon: ({ color, size, focused }) => (
             <Animated.View
@@ -131,14 +132,7 @@ export default function TabLayout() {
               <FontAwesome5 name={focused ? "user-alt" : "user"} size={size-2} color={color} />
             </Animated.View>
           ),
-          headerRight: () => (
-            <Ionicons 
-              name="settings-outline" 
-              size={24} 
-              color={isDark ? '#FFFFFF' : '#000000'} 
-              style={{ marginRight: 16 }}
-            />
-          ),
+          
         }}
       />
     </Tabs>

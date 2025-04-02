@@ -3,8 +3,8 @@ import React from 'react'
 
 const courses = () => {
   return (
-    <View>
-      <Text>Blogs</Text>
+    <View className='flex-1 items-center'>
+      <Text>Building Soon....</Text>
     </View>
   )
 }

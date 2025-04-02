@@ -11,7 +11,7 @@ import {
   Dimensions
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Stack, useLocalSearchParams, router } from 'expo-router';
+import { Stack, useLocalSearchParams, router, useNavigation } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons, MaterialIcons, Feather } from '@expo/vector-icons';
@@ -34,11 +34,12 @@ interface CompletedItems {
 }
 
 // API URL - Replace with your actual API URL
-const API_URL = 'https://api.learntech.com'; // Replace with your actual API URL
+const API_URL = process.env.EXPO_PUBLIC_API_URL; // Replace with your actual API URL
 
 export default function RoadmapDetailScreen() {
   // Get the slug from the URL
   const { slug } = useLocalSearchParams<{ slug: string }>();
+  const navigation = useNavigation();
   
   // State initialization
   const [isLoaded, setIsLoaded] = useState(false);
@@ -70,6 +71,25 @@ export default function RoadmapDetailScreen() {
     return await AsyncStorage.getItem('token');
   };
 
+   // Hide header when loading
+   useEffect(() => {
+    if (!isLoaded) {
+      // Hide header during loading
+      navigation.setOptions({
+        headerShown: false
+      });
+    } else if (response) {
+      // Show header with title when loaded
+      navigation.setOptions({
+        headerShown: true,
+        title: `${response.title} Roadmap`,
+        headerTitleStyle: {
+          color: '#3b82f6',
+          fontWeight: 'bold',
+        },
+      });
+    }
+  }, [isLoaded, response, navigation]);
   // Load data and state on mount
   useEffect(() => {
     async function loadData() {
@@ -91,6 +111,7 @@ export default function RoadmapDetailScreen() {
           if (await checkAuth()) {
             try {
               const token = await getToken();
+              // console.log(`${API_URL}/progress/${slug}`)
               const response = await axios.get(
                 `${API_URL}/progress/${slug}`,
                 {

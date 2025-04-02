@@ -10,22 +10,70 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
+  ActivityIndicator,
+  Alert
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
+import { useAuth } from '../hooks/useAuth';
+
+const API_URL = process.env.EXPO_PUBLIC_API_URL; 
 
 const Login = () => {
   const router = useRouter();
+  const { decodeAndSetUser } = useAuth();
+  
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleLogin = () => {
-    // Implement login logic here
-    console.log('Login with:', email, password);
-    // Navigate to home on successful login
-    router.push('/home');
+  const handleLogin = async () => {
+    // Validate inputs
+    if (!email || !password) {
+      setError('Please enter both email and password');
+      return;
+    }
+
+    // Start loading state
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // Make API request to login endpoint
+      const response = await axios.post(`${process.env.EXPO_PUBLIC_API_URL}/auth/login`, {
+        email,
+        password
+      });
+
+      // Extract token from response
+      const { token } = response.data.data;
+
+      // Use auth hook to decode and store user data
+      const decodedUser = await decodeAndSetUser(token);
+
+      if (decodedUser) {
+        // Navigate to home screen on successful login
+        router.replace('/(tabs)/home'); // Or navigate to your main tab layout
+      } else {
+        setError('Invalid token received. Please try again.');
+      }
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        setError(
+          err.response?.data?.message ||
+          'Login failed. Please check your credentials.'
+        );
+      } else {
+        setError('Something went wrong. Please try again later.');
+        console.error('Login error:', err);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -47,6 +95,13 @@ const Login = () => {
 
             {/* Login Form */}
             <View className="flex-1 px-5 pt-6">
+              {/* Error Message */}
+              {error && (
+                <View className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <Text className="text-red-600 text-sm">{error}</Text>
+                </View>
+              )}
+
               {/* Email Input */}
               <View className="mb-5">
                 <Text className="text-sm font-medium text-gray-700 mb-2">Email</Text>
@@ -94,18 +149,20 @@ const Login = () => {
                 className="bg-blue-600 py-3.5 rounded-lg flex-row justify-center items-center mb-5"
                 onPress={handleLogin}
                 activeOpacity={0.7}
+                disabled={isLoading}
               >
-                <Text className="text-white font-semibold text-center text-base">Sign In</Text>
+                {isLoading ? (
+                  <ActivityIndicator size="small" color="#ffffff" />
+                ) : (
+                  <Text className="text-white font-semibold text-center text-base">Sign In</Text>
+                )}
               </TouchableOpacity>
 
               {/* Register Link */}
               <View className="flex-row justify-center mb-6">
                 <Text className="text-gray-600">Don't have an account? </Text>
                 <TouchableOpacity onPress={() => router.push('/register')}>
-                  <Text className="text-blue-600 font-medium">Sign up </Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={() => router.push('/home')}>
-                  <Text className="text-blue-600 font-medium">Home</Text>
+                  <Text className="text-blue-600 font-medium">Sign up</Text>
                 </TouchableOpacity>
               </View>
             </View>

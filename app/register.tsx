@@ -10,24 +10,77 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
+  ActivityIndicator
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import axios from 'axios';
+
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 const Register = () => {
   const router = useRouter();
-  const [name, setName] = useState('');
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleRegister = () => {
-    // Implement registration logic here
-    console.log('Register with:', name, email, password);
-    // Navigate to home on successful registration
-    router.push('/home');
+  const handleRegister = async () => {
+    // Validate inputs
+    if (!username || !email || !password || !confirmPassword) {
+      setError('Please fill in all fields');
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    if (password.length < 8) {
+      setError('Password must be at least 8 characters long');
+      return;
+    }
+
+    // Start loading state
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // Make API request to register endpoint
+      const response = await axios.post(`${API_URL}/auth/register`, {
+        username,
+        email,
+        password
+      });
+
+      // Check for successful registration
+      if (response.data.success) {
+        // Navigate to verification page
+        router.push({
+          pathname: '/verify',
+          params: { email }
+        });
+      } else {
+        setError(response.data.message || 'Registration failed. Please try again.');
+      }
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        setError(
+          err.response?.data?.message ||
+          'Registration failed. Please try again.'
+        );
+      } else {
+        setError('Something went wrong. Please try again later.');
+        console.error('Registration error:', err);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -49,14 +102,21 @@ const Register = () => {
 
             {/* Registration Form */}
             <View className="flex-1 px-5 pt-4">
+              {/* Error Message */}
+              {error && (
+                <View className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+                  <Text className="text-red-600 text-sm">{error}</Text>
+                </View>
+              )}
+
               {/* Full Name Input */}
               <View className="mb-5">
-                <Text className="text-sm font-medium text-gray-700 mb-2">Full Name</Text>
+                <Text className="text-sm font-medium text-gray-700 mb-2">Username</Text>
                 <TextInput
                   className="border border-gray-300 rounded-lg px-4 py-3 text-gray-800"
-                  placeholder="Enter your full name"
-                  value={name}
-                  onChangeText={setName}
+                  placeholder="Enter your username"
+                  value={username}
+                  onChangeText={setUsername}
                 />
               </View>
 
@@ -117,8 +177,13 @@ const Register = () => {
                 className="bg-blue-600 py-3.5 rounded-lg flex-row justify-center items-center mb-5"
                 onPress={handleRegister}
                 activeOpacity={0.7}
+                disabled={isLoading}
               >
-                <Text className="text-white font-semibold text-center text-base">Create Account</Text>
+                {isLoading ? (
+                  <ActivityIndicator size="small" color="#ffffff" />
+                ) : (
+                  <Text className="text-white font-semibold text-center text-base">Create Account</Text>
+                )}
               </TouchableOpacity>
 
               {/* Login Link */}

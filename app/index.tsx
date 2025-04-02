@@ -1,9 +1,28 @@
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, StatusBar, Platform } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useRouter } from 'expo-router'
+import { useAuth } from '../hooks/useAuth';
 
 const Home = () => {
   const router = useRouter();
+  const { isAuthenticatedSync, isAuthenticated } = useAuth();
+
+  // Check authentication on mount with proper effect
+  useEffect(() => {
+    const checkAuth = async () => {
+      // First try the async version which is more reliable
+      const isAuth = await isAuthenticated();
+      if (isAuth) {
+        router.replace('/(tabs)/home');
+      }
+      // If that fails, fall back to sync version
+      else if (isAuthenticatedSync()) {
+        router.replace('/(tabs)/home');
+      }
+    };
+
+    checkAuth();
+  }, []);
 
   return (
     <SafeAreaView className="flex-1 bg-white" style={{ paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 }}>
