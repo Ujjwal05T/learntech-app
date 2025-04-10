@@ -101,6 +101,7 @@ export default function TabLayout() {
         name="blogs" 
         options={{
           title: 'Blogs',
+          headerShown: false,
           tabBarLabel: 'Blogs',
           tabBarIcon: ({ color, size, focused }) => (
             <Animated.View

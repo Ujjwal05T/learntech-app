@@ -13,8 +13,7 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 import { useNavigation, useRouter } from 'expo-router';
-import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
-import { useAuth } from '../../hooks/useAuth';
+import { Ionicons } from '@expo/vector-icons';
 import { useUserStore } from '../../store/user-store';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -46,9 +45,11 @@ const EditProfile = () => {
   });
 
   //hide header
-  navigation.setOptions({
-    headerShown: false
-  });
+  useEffect(() => {
+    navigation.setOptions({
+      headerShown: false
+    });
+  }, [navigation]);
 
   // Fetch user data
   const fetchUserData = async () => {
@@ -79,7 +80,7 @@ const EditProfile = () => {
       // Update form with existing data
       setFormData({
         fullName: data.fullName || user?.username || '',
-        username: data?.username || '',
+        username: data?.username || user?.username || '',
         email: data?.email || user?.email || '',
         phone: data.phone || '',
         collegeName: data.collegeName || '',
@@ -159,6 +160,17 @@ const EditProfile = () => {
     }));
   };
 
+  // Get avatar letter safely
+  const getAvatarLetter = () => {
+    if (formData.fullName && formData.fullName.trim().length > 0) {
+      return formData.fullName.charAt(0).toUpperCase();
+    } 
+    if (user?.username && user.username.length > 0) {
+      return user.username.charAt(0).toUpperCase();
+    }
+    return 'U';
+  };
+
   // Handle form submission
   const handleSubmit = async () => {
     try {
@@ -188,7 +200,7 @@ const EditProfile = () => {
         collegeName: formData.collegeName.trim(),
         course: formData.course.trim(),
         skills: formData.skills,
-        // projects: formData.projects
+        projects: formData.projects
       };
       
       // Make API request
@@ -237,14 +249,12 @@ const EditProfile = () => {
     <SafeAreaView className="flex-1 bg-gray-50" style={{ paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 }}>
       <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
       
-      {/* Removed the header bar */}
-      
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         className="flex-1"
       >
         <ScrollView className="flex-1">
-          {/* Back button without header */}
+       
           <View className="flex-row items-center justify-between px-4 pt-4">
             <TouchableOpacity 
               onPress={() => router.back()}
@@ -253,11 +263,11 @@ const EditProfile = () => {
               <Ionicons name="arrow-back" size={24} color="#374151" />
             </TouchableOpacity>
             <Text className="text-xl font-bold text-gray-800">Edit Profile</Text>
-            <View style={{ width: 32 }} /> {/* Empty View for alignment */}
+            <View style={{ width: 32 }} /> 
           </View>
           
           <View className="p-4">
-            {/* Status Messages */}
+            
             {error && (
               <View className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
                 <Text className="text-red-600">{error}</Text>
@@ -270,12 +280,12 @@ const EditProfile = () => {
               </View>
             )}
             
-            {/* Profile Avatar */}
+           
             <View className="items-center mb-6">
               <View className="relative">
                 <View className="w-24 h-24 rounded-full bg-blue-100 justify-center items-center border-2 border-blue-200">
                   <Text className="text-4xl font-bold text-blue-600">
-                    {formData.fullName ? formData.fullName.charAt(0).toUpperCase() : user?.username?.charAt(0).toUpperCase() || 'U'}
+                    {getAvatarLetter()}
                   </Text>
                 </View>
                 <View className="absolute bottom-0 right-0 bg-white p-1.5 rounded-full border border-gray-200 shadow-sm">
@@ -286,7 +296,7 @@ const EditProfile = () => {
             
             {/* Form Fields */}
             <View className="space-y-4">
-              {/* Full Name */}
+            
               <View>
                 <Text className="text-gray-700 mb-1 text-sm font-medium">Full Name</Text>
                 <TextInput
@@ -298,11 +308,13 @@ const EditProfile = () => {
                 />
               </View>
               
-              {/* Username (non-editable) - Added this field */}
+              {/* Username (non-editable) */}
               <View>
                 <Text className="text-gray-700 mb-1 text-sm font-medium">Username</Text>
                 <View className="bg-gray-50 rounded-lg px-4 py-3 border border-gray-200 flex-row items-center">
-                  <Text className="text-gray-600 flex-1">@{formData.username}</Text>
+                  <Text className="text-gray-600 flex-1">
+                    @{formData.username}
+                  </Text>
                   <Ionicons name="lock-closed" size={16} color="#9ca3af" />
                 </View>
                 <Text className="text-xs text-gray-500 mt-1">Username cannot be changed</Text>
