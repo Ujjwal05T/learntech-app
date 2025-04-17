@@ -68,14 +68,6 @@ export default function TabLayout() {
             fontWeight: 'bold',
             color: activeColor,
           },
-          headerRight: () => (
-            <Ionicons 
-              name="notifications-outline" 
-              size={24} 
-              color={isDark ? '#FFFFFF' : '#000000'} 
-              style={{ marginRight: 16 }}
-            />
-          ),
         }} 
       />
       

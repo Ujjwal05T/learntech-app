@@ -93,7 +93,7 @@ const HomeScreen = () => {
         }
       >
         {/* Enhanced Header */}
-        <View className="bg-white px-4 py-1 flex-row items-center rounded-xl shadow-sm mb-6">
+        <View className="bg-white px-4 py-1 flex-row items-center rounded-xl mb-6">
           <Text className="text-xl font-medium text-blue-500 mb-1">
             {new Date().getHours() < 12 
               ? "Good morning" 
@@ -126,6 +126,48 @@ const HomeScreen = () => {
           isLoading={loading || refreshing}
           isLargeScreen={isLargeScreen}
         />
+
+        {/* Updates Section */}
+        <View className="mt-8 mb-6">
+          <Text className="text-xl font-bold text-gray-800 mb-4">Recent Updates</Text>
+          
+          {/* Update Items */}
+          <View className="space-y-4 mb-2">
+            <View className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm mb-2">
+              <View className="flex-row justify-between items-center mb-2">
+                <Text className="font-semibold text-blue-500">New Course Added</Text>
+                <Text className="text-xs text-gray-500">2 days ago</Text>
+              </View>
+              <Text className="text-gray-700">Introduction to AI and Machine Learning course is now available!</Text>
+            </View>
+            
+            <View className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm mb-2">
+              <View className="flex-row justify-between items-center mb-2">
+                <Text className="font-semibold text-blue-500">Achievement Unlocked</Text>
+                <Text className="text-xs text-gray-500">1 week ago</Text>
+              </View>
+              <Text className="text-gray-700">You've completed 5 modules in the Web Development track!</Text>
+            </View>
+            
+            <View className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm mb-2">
+              <View className="flex-row justify-between items-center mb-2">
+                <Text className="font-semibold text-blue-500">Platform Update</Text>
+                <Text className="text-xs text-gray-500">2 weeks ago</Text>
+              </View>
+              <Text className="text-gray-700">New features added: Progress tracking and personalized recommendations.</Text>
+            </View>
+            
+            {isLargeScreen && (
+              <View className="bg-white p-4 rounded-xl border border-gray-100 shadow-sm">
+                <View className="flex-row justify-between items-center mb-2">
+                  <Text className="font-semibold text-blue-500">Community Highlight</Text>
+                  <Text className="text-xs text-gray-500">3 weeks ago</Text>
+                </View>
+                <Text className="text-gray-700">Join our monthly webinar on advanced coding techniques this Friday!</Text>
+              </View>
+            )}
+          </View>
+        </View>
         
         {/* Rest of your code remains the same */}
       </ScrollView>

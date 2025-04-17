@@ -169,7 +169,7 @@ export default function RoadmapDetailScreen() {
             }
           );
           
-          console.log("Progress saved to API");
+          // console.log("Progress saved to API");
           
           // Animate progress bar
           const progressPercentage = calculateOverallProgress();

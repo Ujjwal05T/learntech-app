@@ -332,7 +332,7 @@ export default function VideoDetails() {
             {/* Description */}
             <View className="mt-4 bg-gray-50 p-3 rounded-lg">
               <Text className="text-gray-700 leading-5">
-               {params.description as string || 
+               {params.description || 
                 "This is a video description. The creator hasn't added detailed information about this content yet."}
               </Text>
             </View>

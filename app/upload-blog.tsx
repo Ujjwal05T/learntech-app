@@ -107,13 +107,7 @@ export default function UploadVideo() {
          name: videoName || 'video.mp4',
          type: selectedVideo.mimeType || 'video/mp4'
        } as any);
-
-       console.log('Uploading file:', {
-         uri: selectedVideo.uri,
-         name: videoName,
-         size: videoSize,
-         type: selectedVideo.mimeType
-       });
+       
       // Upload to server with improved error handling
       const response = await axios.post(
         `${API_URL}/api/blogs/upload`,

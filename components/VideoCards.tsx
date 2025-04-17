@@ -33,7 +33,7 @@ const VideoCards = ({
         return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
       }
     }
-    return 'https://th.bing.com/th/id/OIP.99B3Eq-7jTjXoexWwPwbbQAAAA?w=220&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7'; // Fallback image
+    return 'https://cdn.pixabay.com/photo/2018/04/29/20/45/laptop-3361063_1280.jpg'; // Fallback image
   };
 
   // Handle video click
@@ -43,7 +43,8 @@ const VideoCards = ({
       params: { 
         videoUrl: videoSrc,
         title: title,
-        author: authorName
+        author: authorName,
+        description: description
       }
     });
   };
@@ -63,7 +64,7 @@ const VideoCards = ({
         />
         <View className="absolute inset-0 items-center justify-center">
           <View className="w-12 h-12 rounded-full bg-blue-500/80 items-center justify-center">
-            <Ionicons name="play" size={24} color="white" />
+            <Ionicons name="play" size={38} color="#CDDAD5" />
           </View>
         </View>
       </View>
@@ -77,13 +78,11 @@ const VideoCards = ({
         
         {/* Author Info */}
         <View className="flex-row items-center mt-2">
-          <View className="w-6 h-6 rounded-full bg-blue-100 items-center justify-center mr-2">
-            <Text className="text-xs text-blue-600 font-bold">
-              {authorName.charAt(0).toUpperCase()}
-            </Text>
+          <View className="w-6 h-6 p-1 rounded-full bg-blue-100 items-center justify-center mr-2">
+            <Ionicons name="person" size={12} color="blue" />
           </View>
           <Text className="text-sm text-gray-600">
-            {authorName}
+            Author {authorName}
           </Text>
         </View>
         
@@ -94,7 +93,7 @@ const VideoCards = ({
         
         {/* Upload Time */}
         <Text className="text-xs text-gray-400 mt-2">
-          {new Date(uploadedTime).toLocaleDateString()}
+          Uploaded On {new Date(uploadedTime).toLocaleDateString()}
         </Text>
       </View>
     </TouchableOpacity>
