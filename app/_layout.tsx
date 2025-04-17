@@ -50,7 +50,18 @@ export default function RootLayout() {
       <Stack.Screen name="verify" options={{
         headerShown: false,
       }} />
-      
+      <Stack.Screen name="forgot-password" options={{
+        headerShown: false,
+      }} />
+      <Stack.Screen name="reset-password" options={{
+        headerShown: false,
+      }} />
+      <Stack.Screen name="video-details" options={{
+        headerShown: false,
+      }} /> 
+      <Stack.Screen name="upload-blog" options={{
+        headerShown: false,
+      }} />     
     </Stack>
   );
 }
