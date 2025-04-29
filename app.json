@@ -2,7 +2,7 @@
   "expo": {
     "name": "LearnTech",
     "slug": "learntech",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "orientation": "portrait",
     "scheme": "learntech",
     "userInterfaceStyle": "light",
@@ -27,7 +27,18 @@
     },
     "plugins": [
       "expo-router",
-      "expo-video"
+      [
+        "react-native-video",
+      {
+        "enableNotificationControls": true,
+        "androidExtensions": {
+          "useExoplayerRtsp": false,
+          "useExoplayerSmoothStreaming": false,
+          "useExoplayerHls": false,
+          "useExoplayerDash": false
+        }
+      }
+      ]
     ],
     "extra": {
       "router": {

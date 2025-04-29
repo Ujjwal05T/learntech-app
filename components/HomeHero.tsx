@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { useRouter } from 'expo-router';
+import React, { useState, useEffect, useCallback } from 'react';
+import { View, Text, TouchableOpacity, ActivityIndicator, AppState, ScrollView, RefreshControl } from 'react-native';
+import { useFocusEffect, useRouter } from 'expo-router';
 import { Ionicons, FontAwesome5 } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -28,10 +27,61 @@ const HomeHero = () => {
   const router = useRouter();
   const [recommendationData, setRecommendationData] = useState<RecommendationData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [lastFetchTime, setLastFetchTime] = useState<number | null>(null);
 
-  useEffect(() => {
+  // Cache expiration time (5 minutes)
+  const CACHE_EXPIRY = 5 * 60 * 1000;
+
+   // Fetch recommendations function
+   const fetchRecommendations = async (token: string, forceRefresh = false) => {
+    try {
+      // If we have data and it's not a forced refresh, check cache age
+      if (!forceRefresh && recommendationData && lastFetchTime) {
+        const cacheAge = Date.now() - lastFetchTime;
+        // If cache is fresh (less than 5 minutes old), don't refresh
+        if (cacheAge < CACHE_EXPIRY) {
+          // console.log('Using cached recommendations, age:', Math.round(cacheAge / 1000), 'seconds');
+          return;
+        }
+      }
+
+      // Only show loading if it's the initial load
+      if (!recommendationData) {
+        setIsLoading(true);
+      }
+
+      // console.log('Fetching fresh recommendations...');
+      const response = await axios.get(
+        `${API_URL}/progress/recommendations`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        // console.log('Got new recommendations data');
+        setRecommendationData(response.data.data);
+        setLastFetchTime(Date.now());
+        setError(null);
+      } else {
+        setError('Could not load recommendations');
+      }
+    } catch (error) {
+      console.error('Error fetching recommendations:', error);
+      setError('Failed to load learning recommendations');
+    } finally {
+      setIsLoading(false);
+      setIsRefreshing(false);
+    }
+  };
+
+   // Initial data load
+   useEffect(() => {
     const checkAuth = async () => {
       const token = await AsyncStorage.getItem('token');
       setIsAuthenticated(!!token);
@@ -46,29 +96,49 @@ const HomeHero = () => {
     checkAuth();
   }, []);
 
-  const fetchRecommendations = async (token: string) => {
-    try {
-      const response = await axios.get(
-        `${API_URL}/progress/recommendations`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+  // Refresh when screen comes into focus
+  useFocusEffect(
+    useCallback(() => {
+      const refreshOnFocus = async () => {
+        const token = await AsyncStorage.getItem('token');
+        if (token) {
+          // Force refresh when coming back to this screen
+          fetchRecommendations(token, true);
         }
-      );
+      };
 
-      if (response.data.success) {
-        setRecommendationData(response.data.data);
-      } else {
-        setError('Could not load recommendations');
-      }
-    } catch (error) {
-      console.error('Error fetching recommendations:', error);
-      setError('Failed to load learning recommendations');
-    } finally {
-      setIsLoading(false);
+      refreshOnFocus();
+    }, [])
+  );
+
+   // Pull-to-refresh handler
+   const handleRefresh = async () => {
+    setIsRefreshing(true);
+    const token = await AsyncStorage.getItem('token');
+    if (token) {
+      fetchRecommendations(token, true);
+    } else {
+      setIsRefreshing(false);
     }
   };
+
+  // Add a listener for events that should trigger a refresh
+  useEffect(() => {
+    // Listen for app state changes (coming back from background)
+    const subscription = AppState.addEventListener('change', async (nextAppState) => {
+      if (nextAppState === 'active') {
+        const token = await AsyncStorage.getItem('token');
+        if (token) {
+          fetchRecommendations(token, true);
+        }
+      }
+    });
+
+    // Important: Clean up the subscription
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   // If user is not authenticated or there's no data and we're not loading
   if ((!isAuthenticated || !recommendationData) && !isLoading) {
@@ -121,6 +191,18 @@ const HomeHero = () => {
   }
 
   return (
+    <ScrollView 
+      refreshControl={
+        <RefreshControl
+          refreshing={isRefreshing}
+          onRefresh={handleRefresh}
+          colors={['#3B82F6']}
+          tintColor="#3B82F6"
+        />
+      }
+      showsVerticalScrollIndicator={false}
+      className="flex-1"
+    >
     <View className="mb-6 space-y-4">
       {/* Last Completed Section */}
       {recommendationData?.lastCompleted ? (
@@ -200,6 +282,7 @@ const HomeHero = () => {
         </View>
       ) : null}
     </View>
+    </ScrollView>
   );
 };
 

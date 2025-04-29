@@ -15,6 +15,7 @@ import HomeProgress from "../../components/HomeProgress";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import HomeHero from "../../components/HomeHero";
+import {WebView} from "react-native-webview";
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -167,9 +168,15 @@ const HomeScreen = () => {
               </View>
             )}
           </View>
+      <WebView
+        className="w-full "
+        style={{ height: 250, borderRadius: 12, overflow: "hidden" }}
+        source={{ uri: 'https://www.youtube.com/embed/a4na2opArGY?si=HCqLFvi1XiqU-v8t' }}
+        allowsFullscreenVideo
+        javaScriptEnabled
+      />
         </View>
         
-        {/* Rest of your code remains the same */}
       </ScrollView>
     </SafeAreaView>
   );

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { 
   View, 
   Text, 
@@ -27,6 +28,7 @@ const initialProjects = ['Personal Portfolio', 'Task Manager App', 'E-commerce W
 
 const Profile = () => {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const { removeToken } = useAuth();
   const { user } = useUserStore();
   
@@ -150,7 +152,9 @@ const Profile = () => {
   // Error state
   if (error && !refreshing) {
     return (
-      <SafeAreaView className="flex-1 justify-center items-center bg-white px-5">
+      <SafeAreaView className="flex-1 justify-center items-center bg-white px-5"
+      style={{ paddingTop: insets.top }}
+      >
         <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
         <Ionicons name="alert-circle" size={60} color="#ef4444" />
         <Text className="text-xl font-bold text-gray-800 mt-4">Error Loading Profile</Text>
@@ -167,8 +171,8 @@ const Profile = () => {
 
   // Success state - show profile with revised layout (no gradient)
   return (
-    <SafeAreaView className="flex-1 bg-gray-50" >
-      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
+    <SafeAreaView className="flex-1 bg-gray-50" style={{ paddingTop: insets.top }}>
+      <StatusBar  barStyle="dark-content" backgroundColor="#ffffff" />
 
       {/* Header with Actions */}
       <View className="bg-white px-4 py-3 flex-row items-center justify-between border-b border-gray-100">

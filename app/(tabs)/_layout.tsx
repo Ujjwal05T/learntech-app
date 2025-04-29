@@ -90,11 +90,11 @@ export default function TabLayout() {
       />
       
       <Tabs.Screen 
-        name="blogs" 
+        name="news" 
         options={{
-          title: 'Blogs',
+          title: 'News',
           headerShown: false,
-          tabBarLabel: 'Blogs',
+          tabBarLabel: 'News',
           tabBarIcon: ({ color, size, focused }) => (
             <Animated.View
               style={{
