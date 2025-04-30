@@ -473,7 +473,7 @@ export default function RoadmapDetailScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-white" style={{ paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 }}>
+    <SafeAreaView className="flex-1 bg-white" >
       <StatusBar backgroundColor="#ffffff" barStyle="dark-content" />
       
       <Stack.Screen 

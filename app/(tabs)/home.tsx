@@ -7,7 +7,7 @@ import {
   Platform,
   ActivityIndicator,
   useWindowDimensions,
-  RefreshControl, // Add this import
+  RefreshControl, 
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useUserStore } from "../../store/user-store";
@@ -15,7 +15,7 @@ import HomeProgress from "../../components/HomeProgress";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import HomeHero from "../../components/HomeHero";
-import {WebView} from "react-native-webview";
+import AptitudePractice from "../../components/AptitudePractice"; // Import the component
 
 const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
@@ -128,6 +128,12 @@ const HomeScreen = () => {
           isLargeScreen={isLargeScreen}
         />
 
+        {/* Aptitude Practice Section */}
+        <View className="mb-4">
+          <Text className="text-xl font-bold text-gray-800 mb-4">Aptitude Practice</Text>
+          <AptitudePractice />
+        </View>
+
         {/* Updates Section */}
         <View className="mt-8 mb-6">
           <Text className="text-xl font-bold text-gray-800 mb-4">Recent Updates</Text>
@@ -168,13 +174,6 @@ const HomeScreen = () => {
               </View>
             )}
           </View>
-      <WebView
-        className="w-full "
-        style={{ height: 250, borderRadius: 12, overflow: "hidden" }}
-        source={{ uri: 'https://www.youtube.com/embed/a4na2opArGY?si=HCqLFvi1XiqU-v8t' }}
-        allowsFullscreenVideo
-        javaScriptEnabled
-      />
         </View>
         
       </ScrollView>

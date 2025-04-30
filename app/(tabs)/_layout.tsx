@@ -70,6 +70,24 @@ export default function TabLayout() {
           },
         }} 
       />
+
+      <Tabs.Screen 
+        name="events" 
+        options={{
+          title: 'Events',
+          tabBarLabel: 'Events',
+          headerShown: true,
+          tabBarIcon: ({ color, size, focused }) => (
+            <Animated.View
+              style={{
+                transform: [{ scale: focused ? 1.1 : 1 }],
+              }}
+            >
+              <Ionicons name={focused ? "calendar" : "calendar-outline"} size={size} color={color} />
+            </Animated.View>
+          ),
+        }}
+      />
       
       <Tabs.Screen 
         name="roadmaps" 
